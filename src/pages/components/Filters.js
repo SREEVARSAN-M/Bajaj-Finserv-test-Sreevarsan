@@ -1,14 +1,23 @@
-import React from 'react';
-
-const specialties = [
-  'General Physician', 'Dentist', 'Dermatologist', 'Paediatrician', 'Gynaecologist', 'ENT', 'Diabetologist',
-  'Cardiologist', 'Physiotherapist', 'Endocrinologist', 'Orthopaedic', 'Ophthalmologist',
-  'Gastroenterologist', 'Pulmonologist', 'Psychiatrist', 'Urologist', 'Dietitian/Nutritionist',
-  'Psychologist', 'Sexologist', 'Nephrologist', 'Neurologist', 'Oncologist', 'Ayurveda', 'Homeopath'
-];
+import React, { useEffect, useState } from 'react';
 
 function Filters({ searchParams, setSearchParams }) {
+  const [specialties, setSpecialties] = useState([]);
   const current = Object.fromEntries(searchParams);
+
+  // Fetch doctor data to get the available specialties
+  useEffect(() => {
+    fetch('https://srijandubey.github.io/campus-api-mock/SRM-C1-25.json')
+      .then(res => res.json())
+      .then(data => {
+        // Extract unique specialties from the doctor data
+        const availableSpecialties = [
+          ...new Set(
+            data.flatMap(doc => doc.specialities?.map(spec => spec.name).filter(Boolean))
+          ),
+        ];
+        setSpecialties(availableSpecialties);
+      });
+  }, []);
 
   const updateParam = (key, value, multi = false) => {
     const newParams = new URLSearchParams(searchParams);
@@ -46,16 +55,20 @@ function Filters({ searchParams, setSearchParams }) {
 
       <div data-testid="filter-header-speciality" className="mb-4">
         <p className="font-bold">Specialities</p>
-        {specialties.map((spec) => (
-          <label key={spec}>
-            <input
-              data-testid={`filter-specialty-${spec.replace(/\s|\//g, '-')}`}
-              type="checkbox"
-              checked={searchParams.getAll('specialty').includes(spec)}
-              onChange={() => toggleSpecialty(spec)}
-            /> {spec}
-          </label>
-        ))}
+        {specialties.length > 0 ? (
+          specialties.map((spec) => (
+            <label key={spec}>
+              <input
+                data-testid={`filter-specialty-${spec.replace(/\s|\//g, '-')}`}
+                type="checkbox"
+                checked={searchParams.getAll('specialty').includes(spec)}
+                onChange={() => toggleSpecialty(spec)}
+              /> {spec}
+            </label>
+          ))
+        ) : (
+          <p>Loading specialties...</p>
+        )}
       </div>
 
       <div data-testid="filter-header-sort">
