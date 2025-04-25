@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import '../Filters.css';  // Adjust the path if necessary
 
 function Filters({ searchParams, setSearchParams }) {
   const [specialties, setSpecialties] = useState([]);
@@ -41,8 +42,17 @@ function Filters({ searchParams, setSearchParams }) {
     setSearchParams(newParams);
   };
 
+  // Clear all filters
+  const clearFilters = () => {
+    const newParams = new URLSearchParams();
+    setSearchParams(newParams);  // Reset all filters by setting empty params
+  };
+
   return (
-    <div className="w-1/4 p-4">
+    <div className="filters-container">
+      {/* Clear All Button at the top */}
+      <button className="clear-filters" onClick={clearFilters}>Clear All</button>
+
       <div data-testid="filter-header-moc" className="mb-4">
         <p className="font-bold">Mode of consultation</p>
         <label>

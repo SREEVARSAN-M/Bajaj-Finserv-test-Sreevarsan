@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import '../Home.css';
 import Autocomplete from './components/Autocomplete';
-import Filters from './components/Filters';
+import Filters from './Filters';
 import DoctorCard from './DoctorCard';
 
 function Home() {
