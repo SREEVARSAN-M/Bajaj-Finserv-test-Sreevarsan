@@ -23,8 +23,8 @@ const DoctorCard = ({ doctor }) => {
       <div className="doctor-details">
         <h2>{name}</h2>
         <p>{specialities?.map(s => s.name).join(', ')}</p>
-        <p>{experience} years of experience</p>
-        <p className="fees">₹ {fees}</p>
+        <p>{experience} </p>
+        <p className="fees"> {fees}</p>
         <p className="clinic-name">{clinic?.name}, {clinic?.address?.locality}</p>
       </div>
 
